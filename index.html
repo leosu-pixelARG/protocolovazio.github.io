@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 📝 [TÍTULO DA PÁGINA NA ABA DO NAVEGADOR] -->
+    <title>O Vazio — ARG Experimental</title>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* =========================================================
+           TELA 01: O VAZIO
+           ========================================================= */
+        #void-scene {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            /* 🖼️ [SUA IMAGEM DE FUNDO DO VAZIO - OPCIONAL] */
+            /* Para usar imagem no Vazio, remova o /* e */ das duas linhas abaixo e coloque sua imagem: */
+            /* background-image: url('fundo-vazio.png'); 
+               background-size: cover; */
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease;
+            z-index: 10;
+        }
+
+        .characters {
+            display: flex;
+            gap: 60px;
+            align-items: flex-end;
+            cursor: pointer;
+        }
+
+        .char {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .char:hover {
+            transform: scale(1.02);
+        }
+
+        /* 🖼️ [AVATAR / PNGTUBER DE LÉO] */
+        .avatar-leo {
+            width: 120px;
+            height: 150px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            /* Troque 'foto-leo.png' pelo nome da sua imagem do Léo */
+            background-image: url('foto-leo.png');
+            background-size: cover;
+            background-position: center;
+            background-color: #f0f0f0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* 🖼️ [AVATAR / PNGTUBER DE SU] */
+        .avatar-su {
+            width: 120px;
+            height: 150px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            /* Troque 'foto-su.png' pelo nome da sua imagem da Su */
+            background-image: url('foto-su.png');
+            background-size: cover;
+            background-position: center;
+            background-color: #f0f0f0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .char-name {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #888;
+            letter-spacing: 2px;
+        }
+
+        .speech-bubble {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #777;
+            background: #f9f9f9;
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid #eaeaea;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            text-align: center;
+            max-width: 250px;
+        }
+
+        /* 🖼️ [O FOGUINHO / ANOMALIA] */
+        #little-flame {
+            position: absolute;
+            bottom: 40px;
+            right: 50px;
+            width: 32px;
+            height: 45px;
+            cursor: pointer;
+            animation: pulse-flame 1.5s infinite alternate ease-in-out;
+            z-index: 20;
+            filter: drop-shadow(0 0 8px rgba(255, 100, 0, 0.6));
+            /* Se quiser trocar o foguinho SVG por uma imagem própria (ex: foguinho.png): */
+            /* background-image: url('foguinho.png'); background-size: contain; background-repeat: no-repeat; */
+        }
+
+        @keyframes pulse-flame {
+            0% { transform: scale(1) translateY(0); filter: drop-shadow(0 0 6px rgba(255, 120, 0, 0.5)); }
+            100% { transform: scale(1.15) translateY(-5px); filter: drop-shadow(0 0 14px rgba(255, 60, 0, 0.9)); }
+        }
+
+        .flame-svg {
+            width: 100%;
+            height: 100%;
+            fill: url(#flameGrad);
+        }
+
+        /* CANVAS DA RUPTURA */
+        #burn-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 30;
+            pointer-events: none;
+            display: none;
+        }
+
+        /* =========================================================
+           TELA 04: O LABORATÓRIO
+           ========================================================= */
+        #lab-scene {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #111316;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            color: #a0aab5;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(20, 30, 45, 0.6) 0%, rgba(5, 7, 10, 0.95) 100%),
+                linear-gradient(rgba(18, 22, 28, 0.5) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 4px;
+        }
+
+        .lab-room {
+            position: relative;
+            width: 900px;
+            height: 550px;
+            border: 2px solid #222b38;
+            background: #151921;
+            /* 🖼️ [SUA ARTE COMPLETA DO LABORATÓRIO - OPCIONAL] */
+            /* Se fizer uma ilustração inteira da sala do laboratório, coloque aqui: */
+            /* background-image: url('cenario-laboratorio.png'); background-size: cover; */
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .lab-desk {
+            position: absolute;
+            bottom: 40px;
+            left: 100px;
+            width: 700px;
+            height: 180px;
+            background: #1c232d;
+            border-top: 4px solid #2f3c4e;
+            border-radius: 4px;
+        }
+
+        /* 🖼️ [IMAGEM DO COMPUTADOR NO CENÁRIO] */
+        .computer-station {
+            position: absolute;
+            bottom: 120px;
+            left: 350px;
+            width: 200px;
+            height: 150px;
+            cursor: pointer;
+            transition: filter 0.2s;
+        }
+        .computer-station:hover {
+            filter: brightness(1.2);
+        }
+
+        .crt-monitor {
+            width: 180px;
+            height: 130px;
+            background: #090b0e;
+            border: 8px solid #2a3442;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 255, 100, 0.1);
+            /* Se quiser usar a imagem de um monitor de computador CRT: */
+            /* background-image: url('monitor-crt.png'); background-size: cover; */
+        }
+
+        .crt-screen-glow {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,255,100,0.15) 0%, rgba(0,50,20,0.4) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #00ff66;
+            font-size: 11px;
+            text-shadow: 0 0 5px #00ff66;
+            animation: monitor-flicker 4s infinite;
+        }
+
+        @keyframes monitor-flicker {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 1; }
+            52% { opacity: 0.7; }
+            54% { opacity: 0.95; }
+        }
+
+        /* 🖼️ [IMAGEM DO DOSSIÊ NA MESA] */
+        .dossier {
+            position: absolute;
+            bottom: 60px;
+            left: 160px;
+            width: 90px;
+            height: 60px;
+            background: #8b5a2b;
+            border-radius: 2px;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+            transition: transform 0.2s;
+            /* Se quiser colocar uma imagem de pasta/dossiê: */
+            /* background-image: url('pasta-dossie.png'); background-size: cover; */
+        }
+        .dossier:hover {
+            transform: translateY(-4px);
+        }
+
+        .dossier::after {
+            content: "CONFIDENCIAL"; /* 📝 [TEXTO DA PASTA NA MESA] */
+            font-size: 8px;
+            color: #e6c280;
+            position: absolute;
+            bottom: 6px;
+            left: 8px;
+            font-weight: bold;
+        }
+
+        /* 📝 [TEXTO DO POST-IT NA MESA] */
+        .sticky-note {
+            position: absolute;
+            bottom: 80px;
+            right: 180px;
+            width: 70px;
+            height: 70px;
+            background: #e8d06b;
+            color: #333;
+            font-size: 9px;
+            padding: 6px;
+            transform: rotate(5deg);
+            box-shadow: 1px 2px 5px rgba(0,0,0,0.3);
+            cursor: pointer;
+            /* Se usar imagem própria de um post-it: */
+            /* background-image: url('postit.png'); background-size: cover; */
+        }
+
+        .emergency-light {
+            position: absolute;
+            top: 15px;
+            right: 30px;
+            width: 25px;
+            height: 25px;
+            background: #ff3b3b;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #ff3b3b, 0 0 40px #ff0000;
+            animation: alarm-pulse 1.2s infinite alternate;
+        }
+
+        @keyframes alarm-pulse {
+            0% { opacity: 0.4; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .lab-hint {
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #556b7d;
+            letter-spacing: 1px;
+        }
+
+        /* =========================================================
+           TELA 05: INTERFACE DO TERMINAL
+           ========================================================= */
+        #terminal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 8, 12, 0.92);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+        }
+
+        .terminal-box {
+            width: 750px;
+            height: 500px;
+            background: #030609;
+            border: 3px solid #1f3a2c;
+            border-radius: 6px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 40px rgba(0, 255, 100, 0.15);
+            position: relative;
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #10301d;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            color: #00ff66;
+            font-size: 12px;
+        }
+
+        .terminal-body {
+            flex-grow: 1;
+            color: #00dd55;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        /* 🎥 Estilo para vídeo dentro do terminal */
+        .terminal-video-container {
+            display: none;
+            margin-top: 15px;
+            width: 100%;
+            border: 1px solid #00ff66;
+        }
+        .terminal-video-container video {
+            width: 100%;
+            max-height: 220px;
+            background: #000;
+        }
+
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+            border-top: 1px dashed #10301d;
+            padding-top: 12px;
+        }
+
+        .prompt-symbol {
+            color: #00ff66;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        .terminal-input {
+            background: transparent;
+            border: none;
+            color: #00ff66;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            outline: none;
+            flex-grow: 1;
+        }
+
+        .close-terminal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: transparent;
+            border: 1px solid #00ff66;
+            color: #00ff66;
+            padding: 3px 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 11px;
+            transition: background 0.2s;
+        }
+        .close-terminal:hover {
+            background: #00ff66;
+            color: #000;
+        }
+
+        /* MODAIS / POPUPS */
+        .modal-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 480px;
+            background: #1b222c;
+            border: 2px solid #324359;
+            padding: 20px;
+            color: #c5d1e0;
+            font-size: 13px;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            border-radius: 4px;
+        }
+        .modal-popup h3 {
+            color: #e6c280;
+            margin-bottom: 10px;
+            font-size: 14px;
+            border-bottom: 1px solid #2d3b4f;
+            padding-bottom: 5px;
+        }
+        .modal-popup p {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        .modal-close {
+            background: #2d3b4f;
+            border: none;
+            color: #fff;
+            padding: 5px 12px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 11px;
+            float: right;
+        }
+        .modal-close:hover {
+            background: #3d506b;
+        }
+    </style>
+</head>
+<body>
+
+    <svg style="display:none;">
+        <defs>
+            <linearGradient id="flameGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+                <stop offset="0%" stop-color="#ff4500" />
+                <stop offset="50%" stop-color="#ff8c00" />
+                <stop offset="100%" stop-color="#ffd700" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <!-- =========================================================
+         01 — O VAZIO (HTML)
+         ========================================================= -->
+    <div id="void-scene">
+        <div class="characters" onclick="triggerDialogue()">
+            
+            <!-- Personagem 1 (Léo) -->
+            <div class="char">
+                <div class="avatar-leo"></div>
+                <!-- 📝 [NOME DO PERSONAGEM 1] -->
+                <div class="char-name">LÉO</div>
+                <div id="bubble-leo" class="speech-bubble">...</div>
+            </div>
+
+            <!-- Personagem 2 (Su) -->
+            <div class="char">
+                <div class="avatar-su"></div>
+                <!-- 📝 [NOME DO PERSONAGEM 2] -->
+                <div class="char-name">SU</div>
+                <div id="bubble-su" class="speech-bubble">...</div>
+            </div>
+
+        </div>
+
+        <!-- 🖼️ / 📝 [O FOGUINHO MISTERIOSO] -->
+        <div id="little-flame" title="Investigar anomalia" onclick="startRupture(event)">
+            <svg class="flame-svg" viewBox="0 0 24 24">
+                <path d="M12 2c-3.5 4-6 7.5-6 11.5 0 3.3 2.7 6 6 6s6-2.7 6-6c0-4-2.5-7.5-6-11.5z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 02/03 — RUPTURA (CANVAS) -->
+    <canvas id="burn-canvas"></canvas>
+
+    <!-- =========================================================
+         04 — O LABORATÓRIO (HTML)
+         ========================================================= -->
+    <div id="lab-scene">
+        <div class="emergency-light"></div>
+        <div class="lab-room">
+            <div class="lab-desk"></div>
+
+            <!-- Monitor CRT -->
+            <div class="computer-station" title="Acessar Terminal do Sentinela" onclick="openTerminal()">
+                <div class="crt-monitor">
+                    <div class="crt-screen-glow">
+                        <!-- 📝 [TEXTO EXIBIDO NA TELA DO MONITOR] -->
+                        [TERMINAL V.09]
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dossiê Confidencial -->
+            <div class="dossier" title="Abrir Dossiê de Contenção" onclick="openDossier()"></div>
+
+            <!-- 📝 [TEXTO DO POST-IT NO CENÁRIO] -->
+            <div class="sticky-note" title="Ler anotação" onclick="openSticky()">
+                SENHA DO SISTEMA:<br><b>SENTINELA + ANO ATUAL</b>
+            </div>
+        </div>
+
+        <!-- 📝 [TEXTO DA DICA NO RODAPÉ] -->
+        <div class="lab-hint">Investigue a sala: clique no Dossiê, no Post-it ou no Terminal do Computador.</div>
+    </div>
+
+    <!-- =========================================================
+         05 — COMPUTADOR / TERMINAL (HTML)
+         ========================================================= -->
+    <div id="terminal-overlay">
+        <div class="terminal-box">
+            <!-- 📝 [TEXTO DO BOTAO DE SAIR] -->
+            <button class="close-terminal" onclick="closeTerminal()">[SAIR DO TERMINAL]</button>
+            
+            <div class="terminal-header">
+                <!-- 📝 [CABECALHO DO TERMINAL] -->
+                <span>SENTINEL_OS // EXPERIMENTO_VAZIO</span>
+                <span id="term-status">ESTADO:BLOQUEADO</span>
+            </div>
+
+            <!-- 📝 [TEXTO INICIAL DO TERMINAL AO ABRIR] -->
+            <div id="term-body" class="terminal-body">
+SISTEMA DE MONITORAMENTO DE ANOMALIAS — PROJETO O VAZIO
+-------------------------------------------------------
+AVISO: Acesso restrito apenas a operadores autorizados do Sentinela.
+Digite comandos ou insira a senha de liberação para acessar os relatórios confidenciais.
+
+Comandos disponíveis:
+> ajuda     - Lista de comandos
+> status    - Relatório atual dos sujeitos Léo e Su
+> senha     - Autenticar senha do sistema
+> video     - Tocar gravação secreta da câmera de segurança
+> sair      - Desconectar terminal
+            </div>
+
+            <!-- 🎥 [REPRODUTOR DE VÍDEO DO TERMINAL] -->
+            <div id="terminal-video-box" class="terminal-video-container">
+                <!-- Substitua 'seu-video.mp4' pelo arquivo do seu vídeo ou teaser do ARG -->
+                <video id="lab-video" controls>
+                    <source src="seu-video.mp4" type="video/mp4">
+                    Seu navegador não suporta a tag de vídeo.
+                </video>
+            </div>
+
+            <div class="terminal-input-line">
+                <span class="prompt-symbol">></span>
+                <!-- 📝 [TEXTO DE AJUDA NO CAMPO DE DIGITACAO] -->
+                <input type="text" id="terminal-input" class="terminal-input" placeholder="Digite um comando..." onkeydown="handleTerminalCommand(event)" autofocus>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         POPUP 1: DOSSIÊ CONFIDENCIAL (HTML & IMAGEM/VÍDEO)
+         ========================================================= -->
+    <div id="modal-dossier" class="modal-popup">
+        <!-- 📝 [TÍTULO DO DOSSIÊ] -->
+        <h3>DOSSIÊ #09 — PROJETO O VAZIO</h3>
+        
+        <!-- 🖼️ [SE QUISER INSERIR UMA FOTO DE EVIDÊNCIA NO DOSSIÊ] -->
+        <!-- Descomente a linha abaixo trocando 'foto-evidencia.jpg' pela sua imagem: -->
+        <!-- <img src="foto-evidencia.jpg" style="width:100%; border:1px solid #324359; margin-bottom:10px;"> -->
+
+        <!-- 📝 [TEXTO COMPLETO DO DOSSIÊ] -->
+        <p><b>Sujeitos:</b> Léo & Su<br>
+        <b>Observação:</b> Os sujeitos foram isolados em uma simulação de entropia nula após a desestabilização da camada de dados principal.<br>
+        <b>Nota de Campo:</b> A chave mestra de restauração do laboratório físico depende da senha mestre do Sentinela gravada no registro principal do sistema (2026).</p>
+        
+        <button class="modal-close" onclick="closeModals()">Fechar</button>
+    </div>
+
+    <!-- =========================================================
+         POPUP 2: POST-IT DETALHADO (HTML)
+         ========================================================= -->
+    <div id="modal-sticky" class="modal-popup">
+        <!-- 📝 [TÍTULO DO LEMBRETE] -->
+        <h3>LEMBRETE DE SEGURANÇA</h3>
+        
+        <!-- 📝 [TEXTO DO LEMBRETE] -->
+        <p>"Não se esqueça: o protocolo de acesso principal exige o nome da corporação em letras maiúsculas seguido do ano atual em que iniciamos a contenção (2026)."</p>
+        
+        <button class="modal-close" onclick="closeModals()">Fechar</button>
+    </div>
+
+    <!-- =========================================================
+         LÓGICA E TEXTOS DINÂMICOS (JAVASCRIPT)
+         ========================================================= -->
+    <script>
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playVoidDrone() {
+            initAudio();
+            try {
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(65, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+            } catch(e) {}
+        }
+
+        function playBlowtorchSound() {
+            initAudio();
+            try {
+                let bufferSize = audioCtx.sampleRate * 2;
+                let buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                let data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+
+                let noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+
+                let filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(800, audioCtx.currentTime);
+                filter.Q.setValueAtTime(3, audioCtx.currentTime);
+
+                let gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 2);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                noise.start();
+            } catch(e) {}
+        }
+
+        // =========================================================
+        // 📝 [DIÁLOGOS DOS PERSONAGENS AO CLICAR NELES NO VAZIO]
+        // =========================================================
+        let dialogueStep = 0;
+        function triggerDialogue() {
+            initAudio();
+            playVoidDrone();
+            const bubbleLeo = document.getElementById('bubble-leo');
+            const bubbleSu = document.getElementById('bubble-su');
+
+            if (dialogueStep === 0) {
+                bubbleLeo.style.opacity = '1';
+                /* 📝 [FALA 1 DO LÉO] */
+                bubbleLeo.innerText = "Tudo está tão silencioso... há quanto tempo estamos aqui?";
+                dialogueStep = 1;
+            } else if (dialogueStep === 1) {
+                bubbleSu.style.opacity = '1';
+                /* 📝 [FALA 1 DA SU] */
+                bubbleSu.innerText = "Eu não sinto mais o mundo lá fora, Léo. Só vejo branco.";
+                dialogueStep = 2;
+            } else {
+                /* 📝 [FALA 2 DO LÉO] */
+                bubbleLeo.innerText = "Tem algo errado com essa parede... Olha aquilo no canto.";
+                /* 📝 [FALA 2 DA SU] */
+                bubbleSu.innerText = "...uma fagulha?";
+                dialogueStep = 3;
+            }
+        }
+
+        function startRupture(event) {
+            event.stopPropagation();
+            playBlowtorchSound();
+
+            const canvas = document.getElementById('burn-canvas');
+            canvas.style.display = 'block';
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let radius = 10;
+            let x = event.clientX;
+            let y = event.clientY;
+
+            function burnLoop() {
+                radius += 35;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fillStyle = '#ff3300';
+                ctx.shadowColor = '#ffcc00';
+                ctx.shadowBlur = 50;
+                ctx.fill();
+                ctx.restore();
+
+                if (radius < Math.max(canvas.width, canvas.height) * 1.5) {
+                    requestAnimationFrame(burnLoop);
+                } else {
+                    document.getElementById('void-scene').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('void-scene').style.display = 'none';
+                        canvas.style.display = 'none';
+                        document.getElementById('lab-scene').style.display = 'flex';
+                    }, 500);
+                }
+            }
+            burnLoop();
+        }
+
+        function openDossier() {
+            document.getElementById('modal-dossier').style.display = 'block';
+        }
+
+        function openSticky() {
+            document.getElementById('modal-sticky').style.display = 'block';
+        }
+
+        function closeModals() {
+            document.getElementById('modal-dossier').style.display = 'none';
+            document.getElementById('modal-sticky').style.display = 'none';
+        }
+
+        function openTerminal() {
+            document.getElementById('terminal-overlay').style.display = 'flex';
+            document.getElementById('terminal-input').focus();
+        }
+
+        function closeTerminal() {
+            document.getElementById('terminal-overlay').style.display = 'none';
+            const video = document.getElementById('lab-video');
+            if(video) video.pause();
+        }
+
+        // =========================================================
+        // 📝 [COMANDOS E RESPOSTAS DO TERMINAL]
+        // =========================================================
+        let isAuthenticated = false;
+
+        function handleTerminalCommand(event) {
+            if (event.key === 'Enter') {
+                const input = document.getElementById('terminal-input');
+                const body = document.getElementById('term-body');
+                const val = input.value.trim().toLowerCase();
+                const valRaw = input.value.trim();
+
+                body.innerText += `\n> ${valRaw}\n`;
+
+                if (val === 'ajuda') {
+                    /* 📝 [RESPOSTA DO COMANDO AJUDA] */
+                    body.innerText += `Comandos:\n - status : Mostra estado dos sujeitos\n - senha [CODIGO] : Autentica o acesso\n - segredos : Lista arquivos ocultos\n - video : Reproduz gravação em vídeo\n - sair : Fecha o terminal`;
+                } else if (val === 'status') {
+                    /* 📝 [RESPOSTA DO COMANDO STATUS] */
+                    body.innerText += `[ALERTA] Sujeito Léo: Sinais vitais estáveis, nível de consciência entorpecido.\n[ALERTA] Sujeito Su: Conexão neural oscilando com o Vazio.`;
+                } else if (val === 'video') {
+                    /* 🎥 [REPRODUÇÃO DE VÍDEO PELO TERMINAL] */
+                    document.getElementById('terminal-video-box').style.display = 'block';
+                    const vid = document.getElementById('lab-video');
+                    vid.play();
+                    body.innerText += `\n[INICIANDO REPRODUÇÃO DE VÍDEO DO SENTINELA...]`;
+                } else if (val.startsWith('senha ')) {
+                    const pass = val.split(' ')[1];
+                    
+                    /* 🔑 [QUAL É A SENHA DO SEU ARG?] */
+                    if (pass.toUpperCase() === 'SENTINELA2026') { 
+                        isAuthenticated = true;
+                        document.getElementById('term-status').innerText = "ESTADO:AUTORIZADO";
+                        document.getElementById('term-status').style.color = "#00ff66";
+                        /* 📝 [TEXTO AO ACERTAR A SENHA] */
+                        body.innerText += `\n[SUCESSO] Acesso total liberado! O arquivo confidencial "VERDADE_01.LOG" foi descriptografado.\n> Digite "segredos" para ler o arquivo.`;
+                    } else {
+                        /* 📝 [TEXTO AO ERRAR A SENHA] */
+                        body.innerText += `\n[ERRO] Senha incorreta. Verifique as anotações na sala.`;
+                    }
+                } else if (val === 'segredos') {
+                    if (isAuthenticated) {
+                        /* 📝 [MENSAGEM / REVELAÇÃO DO ARG] */
+                        body.innerText += `\n=== VERDADE_01.LOG ===\n"O Vazio não é um lugar vazio. É a nossa memória sendo apagada para dar espaço à simulação do Sentinela. Se você está lendo isso, encontre a saída antes que o reset aconteça."`;
+                    } else {
+                        body.innerText += `\n[ACESSO NEGADO] Autentique-se com o comando 'senha [CODIGO]' primeiro.`;
+                    }
+                } else if (val === 'sair') {
+                    closeTerminal();
+                } else {
+                    body.innerText += `Comando desconhecido. Digite 'ajuda' para ver os comandos.`;
+                }
+
+                input.value = '';
+                body.scrollTop = body.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>
