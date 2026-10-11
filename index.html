@@ -106,13 +106,13 @@
             max-width: 250px;
         }
 
-        /* 🔥 [NOVO FOGUINHO FOFO QUE VIRA CHAMA AGRESSIVA SEM QUADRADO] */
+        /* 🔥 [FOGUINHO COM 2000 PIXELS DE MARGEM GIGANTE SEM CORTES] */
         #little-flame {
             position: absolute;
-            bottom: 25px;
-            right: 35px;
-            width: 80px;
-            height: 100px;
+            bottom: -150px;
+            right: -150px;
+            width: 750px;
+            height: 750px;
             cursor: pointer;
             z-index: 20;
             background: transparent;
@@ -121,7 +121,7 @@
             transition: transform 0.2s ease;
         }
         #little-flame:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
         #flame-canvas {
             width: 100%;
@@ -462,9 +462,9 @@
             </div>
         </div>
 
-        <!-- 🔥 [FOGUINHO FOFO QUE VIRA CHAMA AGRESSIVA NO CLIQUE] -->
+        <!-- 🔥 [FOGUINHO GIGANTE COM CANVAS 2000x2000 SEM NENHUM CORTE] -->
         <div id="little-flame" title="Investigar anomalia" onclick="startRupture(event)">
-            <canvas id="flame-canvas" width="80" height="100"></canvas>
+            <canvas id="flame-canvas" width="2000" height="2000"></canvas>
         </div>
     </div>
 
@@ -554,13 +554,13 @@ Comandos disponíveis:
     </div>
 
     <!-- =========================================================
-         LÓGICA JAVASCRIPT: FOGO FOFO QUE VIRA AGRESSIVO
+         LÓGICA JAVASCRIPT: FOGO MONUMENTAL DE 2000 PIXELS
          ========================================================= -->
     <script>
         const flameCanvas = document.getElementById('flame-canvas');
         const fCtx = flameCanvas.getContext('2d');
         
-        let flameState = 'cute'; // 'cute' ou 'aggressive'
+        let flameState = 'cute'; 
         let time = 0;
         let aggressiveParticles = [];
 
@@ -568,31 +568,32 @@ Comandos disponíveis:
             fCtx.clearRect(0, 0, flameCanvas.width, flameCanvas.height);
             time += 0.1;
 
-            const cx = flameCanvas.width / 2;
-            const cy = flameCanvas.height - 20;
+            // Centro posicionado no grid massivo de 2000x2000
+            const cx = 1300;
+            const cy = 1500;
 
             if (flameState === 'cute') {
-                // --- ESTADO FOFO: CHAMA SUAVE COM DOIS OLHINHOS ---
+                // --- ESTADO FOFO COM OLHINHOS ---
                 
-                // Brilho suave em volta
+                // Brilho suave
                 fCtx.save();
                 fCtx.beginPath();
-                fCtx.arc(cx, cy - 15, 28, 0, Math.PI * 2);
-                fCtx.fillStyle = 'rgba(255, 120, 0, 0.2)';
+                fCtx.arc(cx, cy - 80, 120, 0, Math.PI * 2);
+                fCtx.fillStyle = 'rgba(255, 120, 0, 0.15)';
                 fCtx.shadowColor = '#ff6600';
-                fCtx.shadowBlur = 15;
+                fCtx.shadowBlur = 50;
                 fCtx.fill();
                 fCtx.restore();
 
                 // Corpo da Chaminha Fofa
                 fCtx.save();
                 fCtx.beginPath();
-                fCtx.moveTo(cx - 20, cy);
-                let topX = cx + Math.sin(time * 0.8) * 6;
-                let topY = cy - 50 + Math.cos(time * 1.2) * 4;
+                fCtx.moveTo(cx - 90, cy);
+                let topX = cx + Math.sin(time * 0.8) * 25;
+                let topY = cy - 250 + Math.cos(time * 1.2) * 18;
                 
-                fCtx.bezierCurveTo(cx - 22, cy - 30, cx - 15, topY + 10, topX, topY);
-                fCtx.bezierCurveTo(cx + 15, topY + 10, cx + 22, cy - 30, cx + 20, cy);
+                fCtx.bezierCurveTo(cx - 110, cy - 140, cx - 60, topY + 50, topX, topY);
+                fCtx.bezierCurveTo(cx + 60, topY + 50, cx + 110, cy - 140, cx + 90, cy);
                 fCtx.closePath();
 
                 let grad = fCtx.createLinearGradient(0, cy, 0, topY);
@@ -602,67 +603,61 @@ Comandos disponíveis:
                 fCtx.fillStyle = grad;
                 fCtx.fill();
 
-                // NÚCLEO INTERNO
+                // Núcleo Branco
                 fCtx.beginPath();
-                fCtx.moveTo(cx - 10, cy);
-                fCtx.bezierCurveTo(cx - 10, cy - 15, cx - 5, topY + 25, cx + Math.sin(time) * 3, topY + 20);
-                fCtx.bezierCurveTo(cx + 5, topY + 25, cx + 10, cy - 15, cx + 10, cy);
+                fCtx.moveTo(cx - 45, cy);
+                fCtx.bezierCurveTo(cx - 45, cy - 80, cx - 25, topY + 100, cx + Math.sin(time) * 12, topY + 90);
+                fCtx.bezierCurveTo(cx + 25, topY + 100, cx + 45, cy - 80, cx + 45, cy);
                 fCtx.fillStyle = '#ffffff';
                 fCtx.fill();
 
-                // DOIS OLHINHOS FOFOS (Piscada ocasional)
-                let eyeHeight = (Math.floor(time * 0.5) % 8 === 0) ? 1 : 6;
+                // Olhinhos fofos
+                let eyeHeight = (Math.floor(time * 0.5) % 8 === 0) ? 2 : 20;
                 
-                // Olho Esquerdo
                 fCtx.fillStyle = '#222';
                 fCtx.beginPath();
-                fCtx.ellipse(cx - 7, cy - 20, 3, eyeHeight, 0, 0, Math.PI * 2);
+                fCtx.ellipse(cx - 30, cy - 100, 12, eyeHeight, 0, 0, Math.PI * 2);
                 fCtx.fill();
 
-                // Olho Direito
                 fCtx.beginPath();
-                fCtx.ellipse(cx + 7, cy - 20, 3, eyeHeight, 0, 0, Math.PI * 2);
+                fCtx.ellipse(cx + 30, cy - 100, 12, eyeHeight, 0, 0, Math.PI * 2);
                 fCtx.fill();
 
-                // Brilho dos Olhos
-                if (eyeHeight > 2) {
+                if (eyeHeight > 5) {
                     fCtx.fillStyle = '#fff';
                     fCtx.beginPath();
-                    fCtx.arc(cx - 8, cy - 22, 1.2, 0, Math.PI * 2);
-                    fCtx.arc(cx + 6, cy - 22, 1.2, 0, Math.PI * 2);
+                    fCtx.arc(cx - 34, cy - 106, 4, 0, Math.PI * 2);
+                    fCtx.arc(cx + 26, cy - 106, 4, 0, Math.PI * 2);
                     fCtx.fill();
                 }
                 fCtx.restore();
 
             } else {
-                // --- ESTADO AGRESSIVO: CHAMA EXPLOSIVA REALISTA (SEM OLHOS) ---
-                
-                // Adiciona muitas partículas por frame
-                for (let i = 0; i < 6; i++) {
+                // --- ESTADO AGRESSIVO / EXPLOSIVO MASSIVO (SEM OLHOS) ---
+                for (let i = 0; i < 25; i++) {
                     aggressiveParticles.push({
-                        x: cx + (Math.random() * 30 - 15),
-                        y: cy + 10,
-                        vx: Math.random() * 4 - 2,
-                        vy: -(Math.random() * 5 + 3),
-                        radius: Math.random() * 12 + 6,
+                        x: cx + (Math.random() * 250 - 125),
+                        y: cy + 40,
+                        vx: Math.random() * 24 - 12,
+                        vy: -(Math.random() * 35 + 15),
+                        radius: Math.random() * 70 + 25,
                         color: Math.random() > 0.3 ? '#ff2200' : '#ffbb00',
-                        life: Math.random() * 25 + 15
+                        life: Math.random() * 60 + 30
                     });
                 }
 
-                // Renderiza as partículas violentas
                 for (let i = aggressiveParticles.length - 1; i >= 0; i--) {
                     let p = aggressiveParticles[i];
                     p.x += p.vx;
                     p.y += p.vy;
-                    p.radius *= 0.93;
+                    p.radius *= 0.95;
                     p.life--;
 
                     fCtx.beginPath();
                     fCtx.arc(p.x, p.y, Math.max(0.1, p.radius), 0, Math.PI * 2);
                     fCtx.fillStyle = p.color;
-                    fCtx.shadowColor = '#ff3300';
-                    fCtx.shadowBlur = 12;
+                    fCtx.shadowColor = '#ff2200';
+                    fCtx.shadowBlur = 35;
                     fCtx.fill();
 
                     if (p.life <= 0 || p.radius <= 0.5) {
@@ -745,15 +740,13 @@ Comandos disponíveis:
             }
         }
 
-        // Ruptura com Transformação do Foguinho
+        // Ruptura com Transformação Massiva
         function startRupture(event) {
             event.stopPropagation();
             
-            // 1. Muda estado da chama para Agressivo (some com os olhos e solta chamas reais)
             flameState = 'aggressive';
             playBlowtorchSound();
 
-            // 2. Pequeno atraso para mostrar o fogo aumentando antes do maçarico cobrir a tela
             setTimeout(() => {
                 const canvas = document.getElementById('burn-canvas');
                 canvas.style.display = 'block';
@@ -766,7 +759,7 @@ Comandos disponíveis:
                 let y = event.clientY || window.innerHeight - 60;
 
                 function burnLoop() {
-                    radius += 45;
+                    radius += 60;
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     
                     ctx.save();
@@ -775,7 +768,7 @@ Comandos disponíveis:
                     ctx.closePath();
                     ctx.fillStyle = '#ff3300';
                     ctx.shadowColor = '#ffcc00';
-                    ctx.shadowBlur = 60;
+                    ctx.shadowBlur = 80;
                     ctx.fill();
                     ctx.restore();
 
@@ -791,7 +784,7 @@ Comandos disponíveis:
                     }
                 }
                 burnLoop();
-            }, 300);
+            }, 350);
         }
 
         function openDossier() { document.getElementById('modal-dossier').style.display = 'block'; }
