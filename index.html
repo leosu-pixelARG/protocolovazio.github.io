@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- 📝 [TÍTULO DA PÁGINA NA ABA DO NAVEGADOR] -->
-    <title>O Vazio — ARG Experimental</title>
+    <title>O Vazio — Protocolo Sentinela</title>
     
     <style>
         * {
@@ -31,9 +31,7 @@
             width: 100%;
             height: 100%;
             /* 🖼️ [SUA IMAGEM DE FUNDO DO VAZIO - OPCIONAL] */
-            /* Para usar imagem no Vazio, remova o /* e */ das duas linhas abaixo e coloque sua imagem: */
-            /* background-image: url('fundo-vazio.png'); 
-               background-size: cover; */
+            /* background-image: url('fundo-vazio.png'); background-size: cover; */
             background-color: #ffffff;
             display: flex;
             flex-direction: column;
@@ -67,7 +65,6 @@
             height: 150px;
             border: 2px solid #ccc;
             border-radius: 8px;
-            /* Troque 'foto-leo.png' pelo nome da sua imagem do Léo */
             background-image: url('foto-leo.png');
             background-size: cover;
             background-position: center;
@@ -81,7 +78,6 @@
             height: 150px;
             border: 2px solid #ccc;
             border-radius: 8px;
-            /* Troque 'foto-su.png' pelo nome da sua imagem da Su */
             background-image: url('foto-su.png');
             background-size: cover;
             background-position: center;
@@ -110,30 +106,24 @@
             max-width: 250px;
         }
 
-        /* 🖼️ [O FOGUINHO / ANOMALIA] */
+        /* 🔥 [NOVO FOGUINHO REALISTA / ANOMALIA NO CANTO] */
         #little-flame {
             position: absolute;
-            bottom: 40px;
-            right: 50px;
-            width: 32px;
-            height: 45px;
+            bottom: 30px;
+            right: 40px;
+            width: 50px;
+            height: 70px;
             cursor: pointer;
-            animation: pulse-flame 1.5s infinite alternate ease-in-out;
             z-index: 20;
-            filter: drop-shadow(0 0 8px rgba(255, 100, 0, 0.6));
-            /* Se quiser trocar o foguinho SVG por uma imagem própria (ex: foguinho.png): */
-            /* background-image: url('foguinho.png'); background-size: contain; background-repeat: no-repeat; */
+            filter: drop-shadow(0 0 12px rgba(255, 100, 0, 0.8));
+            transition: transform 0.2s;
         }
-
-        @keyframes pulse-flame {
-            0% { transform: scale(1) translateY(0); filter: drop-shadow(0 0 6px rgba(255, 120, 0, 0.5)); }
-            100% { transform: scale(1.15) translateY(-5px); filter: drop-shadow(0 0 14px rgba(255, 60, 0, 0.9)); }
+        #little-flame:hover {
+            transform: scale(1.2);
         }
-
-        .flame-svg {
+        #flame-canvas {
             width: 100%;
             height: 100%;
-            fill: url(#flameGrad);
         }
 
         /* CANVAS DA RUPTURA */
@@ -174,8 +164,7 @@
             height: 550px;
             border: 2px solid #222b38;
             background: #151921;
-            /* 🖼️ [SUA ARTE COMPLETA DO LABORATÓRIO - OPCIONAL] */
-            /* Se fizer uma ilustração inteira da sala do laboratório, coloque aqui: */
+            /* 🖼️ [ARTE DE FUNDO DO LABORATÓRIO - OPCIONAL] */
             /* background-image: url('cenario-laboratorio.png'); background-size: cover; */
             box-shadow: inset 0 0 50px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.5);
             border-radius: 4px;
@@ -193,7 +182,6 @@
             border-radius: 4px;
         }
 
-        /* 🖼️ [IMAGEM DO COMPUTADOR NO CENÁRIO] */
         .computer-station {
             position: absolute;
             bottom: 120px;
@@ -215,8 +203,6 @@
             border-radius: 8px;
             position: relative;
             box-shadow: 0 0 15px rgba(0, 255, 100, 0.1);
-            /* Se quiser usar a imagem de um monitor de computador CRT: */
-            /* background-image: url('monitor-crt.png'); background-size: cover; */
         }
 
         .crt-screen-glow {
@@ -239,7 +225,6 @@
             54% { opacity: 0.95; }
         }
 
-        /* 🖼️ [IMAGEM DO DOSSIÊ NA MESA] */
         .dossier {
             position: absolute;
             bottom: 60px;
@@ -251,15 +236,13 @@
             cursor: pointer;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
             transition: transform 0.2s;
-            /* Se quiser colocar uma imagem de pasta/dossiê: */
-            /* background-image: url('pasta-dossie.png'); background-size: cover; */
         }
         .dossier:hover {
             transform: translateY(-4px);
         }
 
         .dossier::after {
-            content: "CONFIDENCIAL"; /* 📝 [TEXTO DA PASTA NA MESA] */
+            content: "CONFIDENCIAL";
             font-size: 8px;
             color: #e6c280;
             position: absolute;
@@ -268,7 +251,6 @@
             font-weight: bold;
         }
 
-        /* 📝 [TEXTO DO POST-IT NA MESA] */
         .sticky-note {
             position: absolute;
             bottom: 80px;
@@ -282,8 +264,6 @@
             transform: rotate(5deg);
             box-shadow: 1px 2px 5px rgba(0,0,0,0.3);
             cursor: pointer;
-            /* Se usar imagem própria de um post-it: */
-            /* background-image: url('postit.png'); background-size: cover; */
         }
 
         .emergency-light {
@@ -361,7 +341,6 @@
             white-space: pre-wrap;
         }
 
-        /* 🎥 Estilo para vídeo dentro do terminal */
         .terminal-video-container {
             display: none;
             margin-top: 15px;
@@ -370,7 +349,7 @@
         }
         .terminal-video-container video {
             width: 100%;
-            max-height: 220px;
+            max-height: 200px;
             background: #000;
         }
 
@@ -461,22 +440,11 @@
 </head>
 <body>
 
-    <svg style="display:none;">
-        <defs>
-            <linearGradient id="flameGrad" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stop-color="#ff4500" />
-                <stop offset="50%" stop-color="#ff8c00" />
-                <stop offset="100%" stop-color="#ffd700" />
-            </linearGradient>
-        </defs>
-    </svg>
-
     <!-- =========================================================
          01 — O VAZIO (HTML)
          ========================================================= -->
     <div id="void-scene">
         <div class="characters" onclick="triggerDialogue()">
-            
             <!-- Personagem 1 (Léo) -->
             <div class="char">
                 <div class="avatar-leo"></div>
@@ -492,14 +460,11 @@
                 <div class="char-name">SU</div>
                 <div id="bubble-su" class="speech-bubble">...</div>
             </div>
-
         </div>
 
-        <!-- 🖼️ / 📝 [O FOGUINHO MISTERIOSO] -->
+        <!-- 🔥 [FOGO REALISTA NO CANTO - ANIMAÇÃO CANVAS] -->
         <div id="little-flame" title="Investigar anomalia" onclick="startRupture(event)">
-            <svg class="flame-svg" viewBox="0 0 24 24">
-                <path d="M12 2c-3.5 4-6 7.5-6 11.5 0 3.3 2.7 6 6 6s6-2.7 6-6c0-4-2.5-7.5-6-11.5z"/>
-            </svg>
+            <canvas id="flame-canvas" width="50" height="70"></canvas>
         </div>
     </div>
 
@@ -518,7 +483,7 @@
             <div class="computer-station" title="Acessar Terminal do Sentinela" onclick="openTerminal()">
                 <div class="crt-monitor">
                     <div class="crt-screen-glow">
-                        <!-- 📝 [TEXTO EXIBIDO NA TELA DO MONITOR] -->
+                        <!-- 📝 [TEXTO NA TELA DO MONITOR] -->
                         [TERMINAL V.09]
                     </div>
                 </div>
@@ -527,13 +492,12 @@
             <!-- Dossiê Confidencial -->
             <div class="dossier" title="Abrir Dossiê de Contenção" onclick="openDossier()"></div>
 
-            <!-- 📝 [TEXTO DO POST-IT NO CENÁRIO] -->
+            <!-- 📝 [TEXTO DO POST-IT] -->
             <div class="sticky-note" title="Ler anotação" onclick="openSticky()">
                 SENHA DO SISTEMA:<br><b>SENTINELA + ANO ATUAL</b>
             </div>
         </div>
 
-        <!-- 📝 [TEXTO DA DICA NO RODAPÉ] -->
         <div class="lab-hint">Investigue a sala: clique no Dossiê, no Post-it ou no Terminal do Computador.</div>
     </div>
 
@@ -542,16 +506,13 @@
          ========================================================= -->
     <div id="terminal-overlay">
         <div class="terminal-box">
-            <!-- 📝 [TEXTO DO BOTAO DE SAIR] -->
             <button class="close-terminal" onclick="closeTerminal()">[SAIR DO TERMINAL]</button>
             
             <div class="terminal-header">
-                <!-- 📝 [CABECALHO DO TERMINAL] -->
                 <span>SENTINEL_OS // EXPERIMENTO_VAZIO</span>
                 <span id="term-status">ESTADO:BLOQUEADO</span>
             </div>
 
-            <!-- 📝 [TEXTO INICIAL DO TERMINAL AO ABRIR] -->
             <div id="term-body" class="terminal-body">
 SISTEMA DE MONITORAMENTO DE ANOMALIAS — PROJETO O VAZIO
 -------------------------------------------------------
@@ -562,65 +523,105 @@ Comandos disponíveis:
 > ajuda     - Lista de comandos
 > status    - Relatório atual dos sujeitos Léo e Su
 > senha     - Autenticar senha do sistema
-> video     - Tocar gravação secreta da câmera de segurança
+> video     - Tocar gravação secreta de segurança
 > sair      - Desconectar terminal
             </div>
 
-            <!-- 🎥 [REPRODUTOR DE VÍDEO DO TERMINAL] -->
+            <!-- 🎥 [VÍDEO DO TERMINAL] -->
             <div id="terminal-video-box" class="terminal-video-container">
-                <!-- Substitua 'seu-video.mp4' pelo arquivo do seu vídeo ou teaser do ARG -->
                 <video id="lab-video" controls>
                     <source src="seu-video.mp4" type="video/mp4">
-                    Seu navegador não suporta a tag de vídeo.
+                    Seu navegador não suporta vídeo.
                 </video>
             </div>
 
             <div class="terminal-input-line">
                 <span class="prompt-symbol">></span>
-                <!-- 📝 [TEXTO DE AJUDA NO CAMPO DE DIGITACAO] -->
                 <input type="text" id="terminal-input" class="terminal-input" placeholder="Digite um comando..." onkeydown="handleTerminalCommand(event)" autofocus>
             </div>
         </div>
     </div>
 
-    <!-- =========================================================
-         POPUP 1: DOSSIÊ CONFIDENCIAL (HTML & IMAGEM/VÍDEO)
-         ========================================================= -->
+    <!-- MODAL DOSSIÊ -->
     <div id="modal-dossier" class="modal-popup">
-        <!-- 📝 [TÍTULO DO DOSSIÊ] -->
         <h3>DOSSIÊ #09 — PROJETO O VAZIO</h3>
-        
-        <!-- 🖼️ [SE QUISER INSERIR UMA FOTO DE EVIDÊNCIA NO DOSSIÊ] -->
-        <!-- Descomente a linha abaixo trocando 'foto-evidencia.jpg' pela sua imagem: -->
-        <!-- <img src="foto-evidencia.jpg" style="width:100%; border:1px solid #324359; margin-bottom:10px;"> -->
-
-        <!-- 📝 [TEXTO COMPLETO DO DOSSIÊ] -->
         <p><b>Sujeitos:</b> Léo & Su<br>
         <b>Observação:</b> Os sujeitos foram isolados em uma simulação de entropia nula após a desestabilização da camada de dados principal.<br>
         <b>Nota de Campo:</b> A chave mestra de restauração do laboratório físico depende da senha mestre do Sentinela gravada no registro principal do sistema (2026).</p>
-        
         <button class="modal-close" onclick="closeModals()">Fechar</button>
     </div>
 
-    <!-- =========================================================
-         POPUP 2: POST-IT DETALHADO (HTML)
-         ========================================================= -->
+    <!-- MODAL POST-IT -->
     <div id="modal-sticky" class="modal-popup">
-        <!-- 📝 [TÍTULO DO LEMBRETE] -->
         <h3>LEMBRETE DE SEGURANÇA</h3>
-        
-        <!-- 📝 [TEXTO DO LEMBRETE] -->
         <p>"Não se esqueça: o protocolo de acesso principal exige o nome da corporação em letras maiúsculas seguido do ano atual em que iniciamos a contenção (2026)."</p>
-        
         <button class="modal-close" onclick="closeModals()">Fechar</button>
     </div>
 
     <!-- =========================================================
-         LÓGICA E TEXTOS DINÂMICOS (JAVASCRIPT)
+         LÓGICA JAVASCRIPT & ANIMAÇÃO DE FOGO REALISTA
          ========================================================= -->
     <script>
-        let audioCtx = null;
+        // Animação de Fogo Realista com Partículas (Canvas)
+        const flameCanvas = document.getElementById('flame-canvas');
+        const fCtx = flameCanvas.getContext('2d');
+        let particles = [];
 
+        function initFireParticles() {
+            for (let i = 0; i < 25; i++) {
+                particles.push({
+                    x: flameCanvas.width / 2 + (Math.random() * 16 - 8),
+                    y: flameCanvas.height - 10,
+                    radius: Math.random() * 6 + 3,
+                    color: Math.random() > 0.4 ? '#ff4500' : '#ffaa00',
+                    speedY: Math.random() * 2 + 1,
+                    speedX: Math.random() * 1 - 0.5,
+                    life: Math.random() * 40 + 20
+                });
+            }
+        }
+
+        function updateAndDrawFire() {
+            fCtx.clearRect(0, 0, flameCanvas.width, flameCanvas.height);
+            
+            // Adiciona novas partículas na base
+            if (particles.length < 35) {
+                particles.push({
+                    x: flameCanvas.width / 2 + (Math.random() * 18 - 9),
+                    y: flameCanvas.height - 5,
+                    radius: Math.random() * 7 + 3,
+                    color: Math.random() > 0.3 ? '#ff3300' : '#ffcc00',
+                    speedY: Math.random() * 2.5 + 1,
+                    speedX: Math.random() * 1.2 - 0.6,
+                    life: Math.random() * 40 + 20
+                });
+            }
+
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.y -= p.speedY;
+                p.x += p.speedX;
+                p.radius *= 0.96;
+                p.life--;
+
+                fCtx.beginPath();
+                fCtx.arc(p.x, p.y, Math.max(0.5, p.radius), 0, Math.PI * 2);
+                fCtx.fillStyle = p.color;
+                fCtx.shadowColor = '#ff6600';
+                fCtx.shadowBlur = 8;
+                fCtx.fill();
+
+                if (p.life <= 0 || p.radius <= 0.5) {
+                    particles.splice(i, 1);
+                }
+            }
+            requestAnimationFrame(updateAndDrawFire);
+        }
+        initFireParticles();
+        updateAndDrawFire();
+
+        // Web Audio API para Som
+        let audioCtx = null;
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -650,30 +651,23 @@ Comandos disponíveis:
                 for (let i = 0; i < bufferSize; i++) {
                     data[i] = Math.random() * 2 - 1;
                 }
-
                 let noise = audioCtx.createBufferSource();
                 noise.buffer = buffer;
-
                 let filter = audioCtx.createBiquadFilter();
                 filter.type = 'bandpass';
                 filter.frequency.setValueAtTime(800, audioCtx.currentTime);
                 filter.Q.setValueAtTime(3, audioCtx.currentTime);
-
                 let gain = audioCtx.createGain();
                 gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 2);
-
                 noise.connect(filter);
                 filter.connect(gain);
                 gain.connect(audioCtx.destination);
-
                 noise.start();
             } catch(e) {}
         }
 
-        // =========================================================
-        // 📝 [DIÁLOGOS DOS PERSONAGENS AO CLICAR NELES NO VAZIO]
-        // =========================================================
+        // Diálogos no Vazio
         let dialogueStep = 0;
         function triggerDialogue() {
             initAudio();
@@ -683,23 +677,20 @@ Comandos disponíveis:
 
             if (dialogueStep === 0) {
                 bubbleLeo.style.opacity = '1';
-                /* 📝 [FALA 1 DO LÉO] */
                 bubbleLeo.innerText = "Tudo está tão silencioso... há quanto tempo estamos aqui?";
                 dialogueStep = 1;
             } else if (dialogueStep === 1) {
                 bubbleSu.style.opacity = '1';
-                /* 📝 [FALA 1 DA SU] */
                 bubbleSu.innerText = "Eu não sinto mais o mundo lá fora, Léo. Só vejo branco.";
                 dialogueStep = 2;
             } else {
-                /* 📝 [FALA 2 DO LÉO] */
                 bubbleLeo.innerText = "Tem algo errado com essa parede... Olha aquilo no canto.";
-                /* 📝 [FALA 2 DA SU] */
                 bubbleSu.innerText = "...uma fagulha?";
                 dialogueStep = 3;
             }
         }
 
+        // Ruptura com Maçarico
         function startRupture(event) {
             event.stopPropagation();
             playBlowtorchSound();
@@ -711,11 +702,11 @@ Comandos disponíveis:
             canvas.height = window.innerHeight;
 
             let radius = 10;
-            let x = event.clientX;
-            let y = event.clientY;
+            let x = event.clientX || window.innerWidth - 60;
+            let y = event.clientY || window.innerHeight - 60;
 
             function burnLoop() {
-                radius += 35;
+                radius += 40;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 
                 ctx.save();
@@ -724,7 +715,7 @@ Comandos disponíveis:
                 ctx.closePath();
                 ctx.fillStyle = '#ff3300';
                 ctx.shadowColor = '#ffcc00';
-                ctx.shadowBlur = 50;
+                ctx.shadowBlur = 60;
                 ctx.fill();
                 ctx.restore();
 
@@ -742,35 +733,24 @@ Comandos disponíveis:
             burnLoop();
         }
 
-        function openDossier() {
-            document.getElementById('modal-dossier').style.display = 'block';
-        }
-
-        function openSticky() {
-            document.getElementById('modal-sticky').style.display = 'block';
-        }
-
+        function openDossier() { document.getElementById('modal-dossier').style.display = 'block'; }
+        function openSticky() { document.getElementById('modal-sticky').style.display = 'block'; }
         function closeModals() {
             document.getElementById('modal-dossier').style.display = 'none';
             document.getElementById('modal-sticky').style.display = 'none';
         }
-
         function openTerminal() {
             document.getElementById('terminal-overlay').style.display = 'flex';
             document.getElementById('terminal-input').focus();
         }
-
         function closeTerminal() {
             document.getElementById('terminal-overlay').style.display = 'none';
-            const video = document.getElementById('lab-video');
-            if(video) video.pause();
+            const vid = document.getElementById('lab-video');
+            if(vid) vid.pause();
         }
 
-        // =========================================================
-        // 📝 [COMANDOS E RESPOSTAS DO TERMINAL]
-        // =========================================================
+        // Terminal do Sentinela
         let isAuthenticated = false;
-
         function handleTerminalCommand(event) {
             if (event.key === 'Enter') {
                 const input = document.getElementById('terminal-input');
@@ -781,34 +761,25 @@ Comandos disponíveis:
                 body.innerText += `\n> ${valRaw}\n`;
 
                 if (val === 'ajuda') {
-                    /* 📝 [RESPOSTA DO COMANDO AJUDA] */
                     body.innerText += `Comandos:\n - status : Mostra estado dos sujeitos\n - senha [CODIGO] : Autentica o acesso\n - segredos : Lista arquivos ocultos\n - video : Reproduz gravação em vídeo\n - sair : Fecha o terminal`;
                 } else if (val === 'status') {
-                    /* 📝 [RESPOSTA DO COMANDO STATUS] */
                     body.innerText += `[ALERTA] Sujeito Léo: Sinais vitais estáveis, nível de consciência entorpecido.\n[ALERTA] Sujeito Su: Conexão neural oscilando com o Vazio.`;
                 } else if (val === 'video') {
-                    /* 🎥 [REPRODUÇÃO DE VÍDEO PELO TERMINAL] */
                     document.getElementById('terminal-video-box').style.display = 'block';
-                    const vid = document.getElementById('lab-video');
-                    vid.play();
+                    document.getElementById('lab-video').play();
                     body.innerText += `\n[INICIANDO REPRODUÇÃO DE VÍDEO DO SENTINELA...]`;
                 } else if (val.startsWith('senha ')) {
                     const pass = val.split(' ')[1];
-                    
-                    /* 🔑 [QUAL É A SENHA DO SEU ARG?] */
                     if (pass.toUpperCase() === 'SENTINELA2026') { 
                         isAuthenticated = true;
                         document.getElementById('term-status').innerText = "ESTADO:AUTORIZADO";
                         document.getElementById('term-status').style.color = "#00ff66";
-                        /* 📝 [TEXTO AO ACERTAR A SENHA] */
                         body.innerText += `\n[SUCESSO] Acesso total liberado! O arquivo confidencial "VERDADE_01.LOG" foi descriptografado.\n> Digite "segredos" para ler o arquivo.`;
                     } else {
-                        /* 📝 [TEXTO AO ERRAR A SENHA] */
                         body.innerText += `\n[ERRO] Senha incorreta. Verifique as anotações na sala.`;
                     }
                 } else if (val === 'segredos') {
                     if (isAuthenticated) {
-                        /* 📝 [MENSAGEM / REVELAÇÃO DO ARG] */
                         body.innerText += `\n=== VERDADE_01.LOG ===\n"O Vazio não é um lugar vazio. É a nossa memória sendo apagada para dar espaço à simulação do Sentinela. Se você está lendo isso, encontre a saída antes que o reset aconteça."`;
                     } else {
                         body.innerText += `\n[ACESSO NEGADO] Autentique-se com o comando 'senha [CODIGO]' primeiro.`;
